@@ -7,6 +7,26 @@
 
 import SwiftUI
 
+private enum Operator {
+    case addition
+    case subtraction
+    case multiplication
+    case division
+
+    var text: String {
+        switch self {
+        case .addition:
+            return "+"
+        case .subtraction:
+            return "-"
+        case .multiplication:
+            return "×"
+        case .division:
+            return "÷"
+        }
+    }
+}
+
 struct ContentView: View {
     private let operators: [Operator] = [.addition, .subtraction, .multiplication, .division]
     @State private var displayAnswer = ""
@@ -63,26 +83,6 @@ private func calculation(selectedOperator: Operator, number1: Float?, number2: F
         break
     }
     return answer
-}
-
-private enum Operator {
-    case addition
-    case subtraction
-    case multiplication
-    case division
-
-    var text: String {
-        switch self {
-        case .addition:
-            return "+"
-        case .subtraction:
-            return "-"
-        case .multiplication:
-            return "×"
-        case .division:
-            return "÷"
-        }
-    }
 }
 
 struct ContentView_Previews: PreviewProvider {
