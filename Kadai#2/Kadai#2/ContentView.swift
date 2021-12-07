@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
-    private let operators = ["+", "-", "×", "÷"]
+    private let operators: [Operator] = [.addition, .subtraction, .multiplication, .division]
     @State private var displayAnswer = ""
-    @State private var selectedOperator: String = "+"
+    @State private var selectedOperator: Operator = .addition
     @State private var number1: Float?
     @State private var number2: Float?
 
@@ -19,7 +19,7 @@ struct ContentView: View {
             NumberField(number: $number1)
             NumberField(number: $number2)
             Picker("", selection: $selectedOperator, content: {
-                ForEach(operators, id: \.self) { operatorsElement in Text(operatorsElement)}
+                ForEach(operators, id: \.self) { operatorsElement in Text(operatorsElement.text)}
             })
                 .pickerStyle(.segmented)
                 .padding(.horizontal)
@@ -41,19 +41,19 @@ struct NumberField: View {
     }
 }
 
-func calculation(selectedOperator: String, number1: Float?, number2: Float?) -> String {
+private func calculation(selectedOperator: Operator, number1: Float?, number2: Float?) -> String {
     var answer: String = ""
     let number1 = number1 ?? 0
     let number2 = number2 ?? 0
 
     switch selectedOperator {
-    case "+":
+    case .addition:
         answer = String(number1 + number2)
-    case "-":
+    case .subtraction:
         answer = String(number1 - number2)
-    case "×":
+    case .multiplication:
         answer = String(number1 * number2)
-    case "÷":
+    case .division:
         if number2 == 0 {
             answer = "割る数には0以外を入力してください"
         } else {
@@ -63,6 +63,26 @@ func calculation(selectedOperator: String, number1: Float?, number2: Float?) -> 
         break
     }
     return answer
+}
+
+private enum Operator {
+    case addition
+    case subtraction
+    case multiplication
+    case division
+
+    var text: String {
+        switch self {
+        case .addition:
+            return "+"
+        case .subtraction:
+            return "-"
+        case .multiplication:
+            return "×"
+        case .division:
+            return "÷"
+        }
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
